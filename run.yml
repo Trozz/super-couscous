@@ -1,0 +1,35 @@
+- hosts: localhost
+  gather_facts: true
+  become: true
+  pre_tasks:
+    - name: create user account
+      user:
+        name: trozz
+        comment: "Michael Leer"
+    - name: Set authorized key
+      authorized_key:
+        user: trozz
+        state: present
+        key: https://github.com/trozz.keys
+    - name: Create CF path
+      file:
+        path: /opt/secure/
+        state: directory
+        mode: 0750
+        owner: root
+        group: root
+    - name: copy script & config
+      template:
+        src: "{{ item.name }}"
+        dest: "/opt/secure/{{ item.name }}"
+        mode: "{{ item.mode }}"
+      with_items:
+        - {'name': 'cf_update.py', 'mode': '0755'}
+        - {'name': 'cf_settings.ini', 'mode': '0644'}
+  roles:
+    - franklinkim.newrelic
+    - yatesr.timezone
+    - ericsysmin.chrony
+    - tersmitten.fail2ban
+    - geerlingguy.security
+    - kosssi.gitconfig

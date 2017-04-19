@@ -33,9 +33,9 @@ except CloudFlare.CloudFlareAPIError as e:
 except Exception as e:
     print('/zones.get %s - %s' % (CFdomain, e))
     raise SystemExit(1)
-zone_id = CFget['id']
+zone_id = CFget[0]['id']
 dns_records = [
-    { 'name': CFserver + '.external', 'type': 'A', 'content': '{{ansible_default_ipv4}}'},
+    { 'name': CFserver + '.external', 'type': 'A', 'content': '{{ansible_eth0.ipv4.address}}'},
     { 'name': CFserver + '.internal', 'type': 'A', 'content': '{{ansible_eth1.ipv4.address}}'}
 
 ]

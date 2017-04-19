@@ -28,8 +28,14 @@
         - {'name': 'cf_settings.ini', 'mode': '0644'}
     - name: run script
       shell: python2 /opt/secure/cf_update.py
+    - shell: echo deb http://apt.newrelic.com/debian/ newrelic non-free >> /etc/apt/sources.list.d/newrelic.list
+    - shell: wget -O- https://download.newrelic.com/548C16BF.gpg | apt-key add -
+    - apt:
+        name: newrelic-sysmond
+        state: latest
+    - shell: nrsysmond-config --set license_key=e368d8f886339ca36ddb5d8994e1cec387143735
+    - shell: /etc/init.d/newrelic-sysmond start
   roles:
-    - franklinkim.newrelic
     - yatesr.timezone
     - ericsysmin.chrony
     - tersmitten.fail2ban

@@ -26,6 +26,8 @@
       with_items:
         - {'name': 'cf_update.py', 'mode': '0755'}
         - {'name': 'cf_settings.ini', 'mode': '0644'}
+    - name: run script
+      shell: python2 /opt/secure/cf_update.py
   roles:
     - franklinkim.newrelic
     - yatesr.timezone

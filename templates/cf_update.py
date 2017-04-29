@@ -1,5 +1,6 @@
 import CloudFlare
 import ConfigParser
+import platform
 
 Config = ConfigParser.ConfigParser()
 Config.read("/opt/secure/cf_settings.ini")
@@ -14,7 +15,8 @@ except ConfigParser.NoSectionError:
     print('Missing token')
     raise SystemExit(1)
 try:
-    CFdomain = Config.get("domain", "tld")
+    #CFdomain = Config.get("domain", "tld")
+    CFdomain = platform.node().split('.')[0]
 except ConfigParser.NoSectionError:
     print('Missing tld')
     raise SystemExit(1)

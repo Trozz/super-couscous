@@ -1,6 +1,8 @@
 - hosts: localhost
   gather_facts: true
   become: true
+  vars:
+    security_ssh_permit_root_login: "without-password"
   pre_tasks:
     - name: create user account
       user:

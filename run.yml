@@ -33,6 +33,7 @@
     - apt:
         name: newrelic-sysmond
         state: latest
+        update_cache: yes
     - shell: nrsysmond-config --set license_key=e368d8f886339ca36ddb5d8994e1cec387143735
     - shell: /etc/init.d/newrelic-sysmond start
   roles:

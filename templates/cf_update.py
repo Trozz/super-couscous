@@ -43,8 +43,11 @@ for record in dns_records:
     try:
       CFpost = cf.zones.dns_records.put(zone_id, data=record)
     except CloudFlare.CloudFlareAPIError as e:
-          try:
-              CFpost = cf.zones.dns_records.post(zone_id, data=record)
-          except CloudFlare.CloudFlareAPIError as e:
-              print('/zones.dns_records.post %s - %d %s' % (record['name'], e, e))
-              raise SystemExit(1)
+       print('put failed')
+       failed = 1
+    try:
+       if failed == 1:
+        CFpost = cf.zones.dns_records.post(zone_id, data=record)
+    except CloudFlare.CloudFlareAPIError as e:
+       print('/zones.dns_records.post %s - %d %s' % (record['name'], e, e))
+       raise SystemExit(1)

@@ -49,5 +49,5 @@ for record in dns_records:
        if failed == 1:
         CFpost = cf.zones.dns_records.post(zone_id, data=record)
     except:
-       print('/zones.dns_records.post %s - %d %s' % (record['name'], e, e))
+       print('/zones.dns_records.post %s' % (record['name']))
        raise SystemExit(1)

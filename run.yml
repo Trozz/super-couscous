@@ -26,8 +26,8 @@
       with_items:
         - {'name': 'cf_update.py', 'mode': '0755'}
         - {'name': 'cf_settings.ini', 'mode': '0644'}
-    - name: run script
-      shell: python2 /opt/secure/cf_update.py
+#    - name: run script
+#      shell: python2 /opt/secure/cf_update.py
     - shell: echo deb http://apt.newrelic.com/debian/ newrelic non-free >> /etc/apt/sources.list.d/newrelic.list
     - shell: wget -O- https://download.newrelic.com/548C16BF.gpg | apt-key add -
     - apt:

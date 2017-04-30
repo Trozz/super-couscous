@@ -1,6 +1,7 @@
 import CloudFlare
 import ConfigParser
 import platform
+import requests
 
 Config = ConfigParser.ConfigParser()
 Config.read("/opt/secure/cf_settings.ini")
@@ -26,6 +27,8 @@ except ConfigParser.NoSectionError:
     print('Missing domain')
     raise SystemExit(1)
 
+req = requests.get('http://ip4.icanhazip.com')
+CFip = req.text.replace('\n','')
 cf = CloudFlare.CloudFlare(email=CFuser, token=CFtoken)
 try:
     CFget = cf.zones.get(params={'name': CFdomain})
@@ -36,20 +39,18 @@ except Exception as e:
     print('/zones.get %s - %s' % (CFdomain, e))
     raise SystemExit(1)
 zone_id = CFget[0]['id']
-dns_records = [
-    { 'name': CFserver + '.external', 'type': 'A', 'content': '{{ansible_eth0.ipv4.address}}'}
-
-]
+dns_records = []
+dns_records.insert(0,{ 'name': CFserver + '.external', 'type': 'A', 'content': CFip })
 
 for record in dns_records:
     try:
-      CFpost = cf.zones.dns_records.put(zone_id, data=record)
+        CFpost = cf.zones.dns_records.put(zone_id, data=record)
     except:
-       print('put failed')
-       failed = 1
+        print('put failed')
+        failed = 1
     try:
-       if failed == 1:
-        CFpost = cf.zones.dns_records.post(zone_id, data=record)
+        if failed == 1:
+            CFpost = cf.zones.dns_records.post(zone_id, data=record)
     except:
-       print('/zones.dns_records.post %s' % (record['name']))
-       raise SystemExit(1)
+        print('/zones.dns_records.post %s' % (record['name']))
+        raise SystemExit(1)

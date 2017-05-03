@@ -4,3 +4,4 @@
 - src: tersmitten.fail2ban
 - src: geerlingguy.security
 - src: kosssi.gitconfig
+- src: leanbit.netdata

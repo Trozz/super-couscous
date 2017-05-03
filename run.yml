@@ -44,3 +44,4 @@
     - tersmitten.fail2ban
     - geerlingguy.security
     - kosssi.gitconfig
+    - leanbit.netdata
